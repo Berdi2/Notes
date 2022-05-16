@@ -33,6 +33,8 @@ namespace Notes
             UpdateDataGrid();
 
             SearchForUpdate(true);
+
+            //E
         }
 
         public static class ClsDB
