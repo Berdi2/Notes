@@ -161,8 +161,8 @@ namespace Notes
 
         private void RTBContent_LostFocus(object sender, RoutedEventArgs e)
         {
-            RTBContent.Focusable= false;
-            RTBContent.Cursor= Cursors.Arrow;
+            RTBContent.Focusable = false;
+            RTBContent.Cursor = Cursors.Arrow;
             RTBContent.BorderThickness = new Thickness(0);
         }
     }
