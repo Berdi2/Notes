@@ -190,7 +190,7 @@ namespace Notes
                 isCollapsed = true;
                 LSettings.Content = "&\xf065;";
                 SP.Visibility = Visibility.Collapsed;
-                LSettings.ToolTip = "Expand";
+                LSettings.ToolTip = "Expand (Strg + F)";
             }
         }
     }

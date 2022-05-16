@@ -22,9 +22,9 @@
         </RichTextBox>
         <StackPanel x:Name="SP" Margin="250,50,10,88" Width="40">
             <Label x:Name="LClose" Content="&#xF00D;" MouseLeftButtonDown="LClose_MouseLeftButtonDown" Height="40" Width="40" FontFamily="{StaticResource Font Awesome 6 Free Solid}" FontSize="35" HorizontalContentAlignment="Center" ToolTip="Close"/>
-            <Label x:Name="LSave" Content="&#xf0c7;" MouseLeftButtonDown="LSave_MouseLeftButtonDown" Height="40" Width="40" FontFamily="{StaticResource Font Awesome 6 Free Solid}" FontSize="32" HorizontalContentAlignment="Center" ToolTip="Save"/>
+            <Label x:Name="LSave" Content="&#xf0c7;" MouseLeftButtonDown="LSave_MouseLeftButtonDown" Height="40" Width="40" FontFamily="{StaticResource Font Awesome 6 Free Solid}" FontSize="32" HorizontalContentAlignment="Center" ToolTip="Save (Strg + S)"/>
             <Label x:Name="LColorChange" Content="&#xf53f;" MouseLeftButtonDown="LColorChange_MouseLeftButtonDown" Height="40" Width="40" FontFamily="{StaticResource Font Awesome 6 Free Solid}" FontSize="30" HorizontalContentAlignment="Center" ToolTip="Open the Color Settings"/>
-            <Label x:Name="LCollapse" Content="&#xf066;" MouseLeftButtonDown="LCollapse_MouseLeftButtonDown" Height="40" Width="40" FontFamily="{StaticResource Font Awesome 6 Free Solid}" FontSize="32" HorizontalContentAlignment="Center" ToolTip="Collapse"/>
+            <Label x:Name="LCollapse" Content="&#xf066;" MouseLeftButtonDown="LCollapse_MouseLeftButtonDown" Height="40" Width="40" FontFamily="{StaticResource Font Awesome 6 Free Solid}" FontSize="32" HorizontalContentAlignment="Center" ToolTip="Collapse (Strg + F)"/>
         </StackPanel>
     </Grid>
 </Window>
