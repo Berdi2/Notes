@@ -8,7 +8,7 @@
         Title="Note" Height="300" Width="300" Background="#FFFFDB5B" WindowStyle="None" ResizeMode="NoResize" Topmost="True" Closing="Window_Closing" MouseLeftButtonDown="Window_MouseLeftButtonDown" KeyDown="Window_KeyDown">
     <Grid>
         <Label x:Name="LSettings" Content="&#xf013;" HorizontalAlignment="Left" Margin="250,10,0,0" VerticalAlignment="Top" MouseLeftButtonDown="LSettings_MouseLeftButtonDown" Height="40" Width="40" FontFamily="{StaticResource Font Awesome 6 Free Solid}" FontSize="30" HorizontalContentAlignment="Center" ToolTip="Open the Settings"/>
-        <TextBox x:Name="TBTitle" HorizontalAlignment="Left" Height="40" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="235" Background="#FFFFDB5B" BorderBrush="#FFFFDB5B" FontFamily="Segoe UI Semibold" FontSize="20" MouseDoubleClick="TBTitle_MouseDoubleClick" LostFocus="TBTitle_LostFocus" Focusable="False" Cursor="Arrow" BorderThickness="0"/>
+        <TextBox x:Name="TBTitle" HorizontalAlignment="Left" Height="40" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="235" Background="#FFFFDB5B" BorderBrush="#FFFFDB5B" FontFamily="Segoe UI Semibold" FontSize="20" MouseDoubleClick="TBTitle_MouseDoubleClick" LostFocus="TBTitle_LostFocus" Focusable="False" Cursor="Arrow" BorderThickness="0" VerticalContentAlignment="Center"/>
         <RichTextBox x:Name="RTBContent" Margin="10,55,10,10" Background="#FFFFDB5B" BorderBrush="#FFFFDB5B" FontSize="14" Focusable="False" MouseDoubleClick="RTBContent_MouseDoubleClick" LostFocus="RTBContent_LostFocus" Cursor="Arrow" BorderThickness="0">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
