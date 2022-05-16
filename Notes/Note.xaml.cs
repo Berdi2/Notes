@@ -165,5 +165,16 @@ namespace Notes
             RTBContent.Cursor = Cursors.Arrow;
             RTBContent.BorderThickness = new Thickness(0);
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                if (Keyboard.IsKeyDown(Key.S))
+                {
+                    Save();
+                }
+            }
+        }
     }
 }
