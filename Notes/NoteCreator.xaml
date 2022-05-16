@@ -1,0 +1,19 @@
+﻿<Window x:Class="Notes.NoteCreator"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Notes"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="NoteCreator" Height="281" Width="284" KeyDown="Window_KeyDown">
+    <Grid>
+        <Label x:Name="label1" Content="Note Color" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <xctk:ColorPicker x:Name="CP_NoteColor" Margin="10,41,0,0" Width="120" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" SelectedColor="#FFFFDB5B"/>
+        <Label x:Name="label2" Content="Text Color" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top"/>
+        <xctk:ColorPicker x:Name="CP_TextColor" Margin="10,97,0,0" Width="120" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" SelectedColor="Black"/>
+        <Label x:Name="label3" Content="Settings Color" HorizontalAlignment="Left" Margin="10,122,0,0" VerticalAlignment="Top"/>
+        <xctk:ColorPicker x:Name="CP_XColor" Margin="10,153,0,0" Width="120" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" SelectedColor="Black"/>
+        <Button x:Name="BFinish" Content="Create" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Click="BFinish_Click"/>
+    </Grid>
+</Window>
