@@ -65,10 +65,7 @@ namespace Notes
         {
             if (isCollapsed == true)
             {
-                this.Height = 300;
-                isCollapsed = false;
-                LSettings.Content = "&\xf013;";
-                LSettings.ToolTip = "Open the Settings";
+                ExpandCollapse();
             }
             else
             {
@@ -124,11 +121,7 @@ namespace Notes
 
         private void LCollapse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.Height = 60;
-            isCollapsed = true;
-            LSettings.Content = "&\xf065;";
-            SP.Visibility = Visibility.Collapsed;
-            LSettings.ToolTip = "Expand";
+            ExpandCollapse();
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -174,6 +167,30 @@ namespace Notes
                 {
                     Save();
                 }
+
+                if (Keyboard.IsKeyDown(Key.F))
+                {
+                    ExpandCollapse();
+                }
+            }
+        }
+
+        public void ExpandCollapse()
+        {
+            if (isCollapsed)
+            {
+                this.Height = 300;
+                isCollapsed = false;
+                LSettings.Content = "&\xf013;";
+                LSettings.ToolTip = "Open the Settings";
+            }
+            else
+            {
+                this.Height = 60;
+                isCollapsed = true;
+                LSettings.Content = "&\xf065;";
+                SP.Visibility = Visibility.Collapsed;
+                LSettings.ToolTip = "Expand";
             }
         }
     }
