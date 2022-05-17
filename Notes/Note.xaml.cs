@@ -133,32 +133,43 @@ namespace Notes
 
         private void TBTitle_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            TBTitle.Focusable = true;
-            TBTitle.Focus();
-            TBTitle.Cursor = Cursors.IBeam;
-            TBTitle.BorderThickness = new Thickness(1);
+            TBGetsFocus(TBTitle);
         }
 
         private void TBTitle_LostFocus(object sender, RoutedEventArgs e)
         {
-            TBTitle.Focusable = false;
-            TBTitle.Cursor = Cursors.Arrow;
-            TBTitle.BorderThickness = new Thickness(0);
+            TBLosesFocus(TBTitle);
         }
 
         private void RTBContent_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            RTBContent.Focusable = true;
-            RTBContent.Focus();
-            RTBContent.Cursor = Cursors.IBeam;
-            RTBContent.BorderThickness = new Thickness(1);
+            TBGetsFocus(RTBContent);
         }
 
         private void RTBContent_LostFocus(object sender, RoutedEventArgs e)
         {
-            RTBContent.Focusable = false;
-            RTBContent.Cursor = Cursors.Arrow;
-            RTBContent.BorderThickness = new Thickness(0);
+            TBLosesFocus(RTBContent);
+        }
+
+        public void TBGetsFocus(Control sender)
+        {
+            if (sender is TextBox || sender is RichTextBox)
+            {
+                sender.Focusable = true;
+                sender.Focus();
+                sender.Cursor = Cursors.IBeam;
+                sender.BorderThickness = new Thickness(1);
+            }
+        }
+
+        public void TBLosesFocus(Control sender)
+        {
+            if (sender is TextBox || sender is RichTextBox)
+            {
+                sender.Focusable = false;
+                sender.Cursor = Cursors.Arrow;
+                sender.BorderThickness = new Thickness(0);
+            }
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -173,6 +184,22 @@ namespace Notes
                 if (Keyboard.IsKeyDown(Key.F))
                 {
                     ExpandCollapse();
+                }
+            }
+
+            if(e.Key == Key.Tab)
+            {
+                if (TBTitle.IsFocused)
+                {
+                    TBGetsFocus(RTBContent);
+                }
+                else if (RTBContent.IsFocused)
+                {
+                    TBGetsFocus(TBTitle);
+                }
+                else if(!RTBContent.IsFocused && !TBTitle.IsFocused)
+                {
+                    TBGetsFocus(TBTitle);
                 }
             }
         }
