@@ -34,5 +34,17 @@ namespace Notes.Properties {
                 this["FontSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Alpha {
+            get {
+                return ((bool)(this["Alpha"]));
+            }
+            set {
+                this["Alpha"] = value;
+            }
+        }
     }
 }

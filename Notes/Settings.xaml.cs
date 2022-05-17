@@ -25,6 +25,8 @@ namespace Notes
             InitializeComponent();
 
             TBFontSize.Text = Properties.Settings.Default.FontSize.ToString();
+
+            CBIsAlpha.IsChecked = Properties.Settings.Default.Alpha;
         }
 
         private void BUpdate_Click(object sender, RoutedEventArgs e)
@@ -54,6 +56,13 @@ namespace Notes
             {
                 MessageBox.Show("Font Size can't be empty!", "Notes");
             }
+        }
+
+        private void CBIsAlpha_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.Alpha = (bool)CBIsAlpha.IsChecked;
+            Properties.Settings.Default.Save();
+
         }
     }
 }
