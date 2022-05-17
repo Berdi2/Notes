@@ -23,6 +23,8 @@ namespace Notes
         public Settings()
         {
             InitializeComponent();
+
+            TBFontSize.Text = Properties.Settings.Default.FontSize.ToString();
         }
 
         private void BUpdate_Click(object sender, RoutedEventArgs e)
@@ -45,7 +47,8 @@ namespace Notes
         {
             if (TBFontSize.Text != "")
             {
-
+                Properties.Settings.Default.FontSize = int.Parse(TBFontSize.Text);
+                Properties.Settings.Default.Save();
             }
             else
             {
