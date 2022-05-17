@@ -49,6 +49,8 @@ namespace Notes
             LColorChange.Foreground = XBrush;
             LCollapse.Foreground = XBrush;
 
+            RTBContent.FontSize = Properties.Settings.Default.FontSize;
+
             SP.Visibility = Visibility.Collapsed;
 
             TBTitle.Text = NotesMenu.ClsDB.String("SELECT Title FROM Notes WHERE Id = '" + Id + "'");
