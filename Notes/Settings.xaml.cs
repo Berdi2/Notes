@@ -56,13 +56,17 @@ namespace Notes
             {
                 MessageBox.Show("Font Size can't be empty!", "Notes");
             }
-        }
 
-        private void CBIsAlpha_Click(object sender, RoutedEventArgs e)
-        {
             Properties.Settings.Default.Alpha = (bool)CBIsAlpha.IsChecked;
             Properties.Settings.Default.Save();
+        }
 
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                BApply_Click(sender, e);
+            }
         }
     }
 }
