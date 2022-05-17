@@ -127,8 +127,15 @@ namespace Notes
             NotesMenu mainWindow = Application.Current.Windows.OfType<NotesMenu>().FirstOrDefault();
             if (mainWindow.DG.SelectedItem != null)
             {
-                DataRowView row = (DataRowView)mainWindow.DG.SelectedItems[0];
-                ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + row["Id"] + "'");
+                int loop = 0;
+                foreach (var item in mainWindow.DG.SelectedItems)
+                {
+                    DataRowView row = (DataRowView)mainWindow.DG.SelectedItems[loop];
+                    ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + row["Id"] + "'");
+                    loop++;
+                    Console.WriteLine(loop);
+                    Console.WriteLine(row["Id"]);
+                }
                 UpdateDataGrid();
             }
         }
@@ -194,6 +201,14 @@ namespace Notes
         {
             Settings settings = new Settings();
             settings.Show();
+        }
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                DeleteNote();
+            }
         }
     }
 }

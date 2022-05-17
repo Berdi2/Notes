@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notes"
         mc:Ignorable="d"
-        Title="Notes Menu" Height="450" Width="800">
+        Title="Notes Menu" Height="450" Width="800" KeyUp="Window_KeyUp">
     <Grid>
         <Button x:Name="BAddNote" Content="Add Note" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="BAddNote_Click"/>
         <DataGrid x:Name="DG" Margin="0,35,0,0" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" LayoutUpdated="DG_LayoutUpdated">
@@ -21,6 +21,6 @@
             </DataGrid.ContextMenu>
         </DataGrid>
         <Label x:Name="LSettings" Content="&#xf013;" FontFamily="{StaticResource Font Awesome 6 Free Solid}" HorizontalAlignment="Right" Margin="0,5,0,0" VerticalAlignment="Top" MouseLeftButtonDown="LSettings_MouseLeftButtonDown" FontSize="20"/>
-        <Label x:Name="label" Content="Version: 1.7 Alpha 4" HorizontalAlignment="Left" Margin="97,7,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label" Content="Version: 1.7 Alpha 5" HorizontalAlignment="Left" Margin="97,7,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
