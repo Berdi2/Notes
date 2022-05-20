@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notes"
         mc:Ignorable="d"
-        Title="Notes Menu" Height="450" Width="800" KeyUp="Window_KeyUp" KeyDown="Window_KeyDown">
+        Title="Notes Menu" Height="450" Width="800" KeyUp="Window_KeyUp">
     <Grid>
         <Button x:Name="BAddNote" Content="Add Note" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="BAddNote_Click"/>
         <DataGrid x:Name="DG" Margin="0,35,0,0" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" LayoutUpdated="DG_LayoutUpdated">
