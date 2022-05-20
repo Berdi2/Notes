@@ -209,6 +209,15 @@ namespace Notes
             {
                 DeleteNote();
             }
+
+            if (e.Key == Key.Enter)
+            {
+                if (DG.SelectedItem != null)
+                {
+                    DataRowView row = (DataRowView)DG.SelectedItems[0];
+                    OpenNote((int)row["Id"]);
+                }
+            }
         }
     }
 }
