@@ -1,0 +1,55 @@
+﻿<Window x:Class="Notes.Changelog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Notes"
+        mc:Ignorable="d"
+        Title="Changelog" Height="300" Width="300">
+    <Grid>
+        <RichTextBox x:Name="RTBChangelog" FontSize="14" IsReadOnly="True" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </RichTextBox.Resources>
+            <FlowDocument PagePadding="5,0,5,0" AllowDrop="True" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+                <Paragraph>1.1</Paragraph>
+                <Paragraph>- Update Fenster bei Start öffnet sich nur noch wenn es ein Update gibt</Paragraph>
+                <Paragraph>1.2</Paragraph>
+                <Paragraph>- Cursor über Textfeldern angepasst</Paragraph>
+                <Paragraph>1.3</Paragraph>
+                <Paragraph>- Hintergrund bei den Einstellungen entfernt</Paragraph>
+                <Paragraph>- Tooltips für die Einstellungsicons hinzugefügt</Paragraph>
+                <Paragraph>1.3.1</Paragraph>
+                <Paragraph>- Bugfix: Textfeld war nicht bearbeitbar</Paragraph>
+                <Paragraph>1.4</Paragraph>
+                <Paragraph>- Textfeld Rand nur noch sichtbar wenn es fokussiert ist</Paragraph>
+                <Paragraph>1.5</Paragraph>
+                <Paragraph>- Der Color Editor lädt jetzt die gewählten Farben</Paragraph>
+                <Paragraph>1.6</Paragraph>
+                <Paragraph>- Strg + S kann jetzt zum speichern verwendet werden</Paragraph>
+                <Paragraph>- Strg + F kann jetzt zum Verkleinern/Vergrößern der Note verwendet werden</Paragraph>
+                <Paragraph>1.6.1</Paragraph>
+                <Paragraph>- Tooltips für Strg + F/Strg + S aktualisiert</Paragraph>
+                <Paragraph>1.7</Paragraph>
+                <Paragraph>- Text im Titel vertikal zentriert</Paragraph>
+                <Paragraph>- Settings Menü angelegt</Paragraph>
+                <Paragraph>- Search for Update Button ins Settings Menü verlegt</Paragraph>
+                <Paragraph>- FontSize für das Content Feld kann jetzt im Settings Menü verändert werden</Paragraph>
+                <Paragraph>- Entf Taste kann jetzt verwendet werden um Notes zu löschen</Paragraph>
+                <Paragraph>- Es werden jetzt alle markierten Notes gelöscht, statt nur einer</Paragraph>
+                <Paragraph>1.8</Paragraph>
+                <Paragraph>- Enter in den Settings drücken bewirkt nun das gleiche wie Apply zu drücken</Paragraph>
+                <Paragraph>- In der Note Tab drücken wechselt jetzt zwischen den beiden Textfeldern, wenn keins ausgewählt ist wählt es das Titelfeld aus</Paragraph>
+                <Paragraph>- Enter öffnet die angewählte Note</Paragraph>
+                <Paragraph>- Alle angewählten Notes werden geöffnet</Paragraph>
+                <Paragraph>- Open Note Knopf im Context Menü hinzugefügt</Paragraph>
+                <Paragraph>- Löschen von Notes muss jetzt bestätigt werden</Paragraph>
+                <Paragraph>- Note kann nicht gelöscht während sie offen ist</Paragraph>
+                <Paragraph>- Wählt nicht mehr die nächste Note aus wenn man Enter drückt</Paragraph>
+                <Paragraph>- Notes können jetzt nur noch je einmal geöffnet werden</Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+    </Grid>
+</Window>
