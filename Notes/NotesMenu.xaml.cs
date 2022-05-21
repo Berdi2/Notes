@@ -123,25 +123,38 @@ namespace Notes
             OpenNote(Id);
         }
 
-        public static void DeleteNote(int Id, bool Update)
+        public static void DeleteNote(int Id, bool Update, bool ShowMessageBox)
         {
-            MessageBoxResult result = MessageBox.Show("Do you really want to delete this Note/these Notes?", "Notes", MessageBoxButton.OKCancel);
-            if (result == MessageBoxResult.OK)
+            if (ShowMessageBox)
+            {
+                MessageBoxResult result = MessageBox.Show("Do you really want to delete this Note/these Notes?", "Notes", MessageBoxButton.OKCancel);
+                if (result == MessageBoxResult.OK)
+                {
+                    ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Id + "'");
+                    if (Update)
+                    UpdateDataGrid();
+                }
+            }
+            else
             {
                 ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Id + "'");
                 if (Update)
-                    UpdateDataGrid();
+                UpdateDataGrid();
             }
         }
 
         public static void DeleteNote_DGSelectedItems()
         {
-            foreach (DataRowView row in NM().DG.SelectedItems)
+            MessageBoxResult result = MessageBox.Show("Do you really want to delete this Note/these Notes?", "Notes", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
             {
-                DeleteNote((int)row["Id"], false);
-            }
+                foreach (DataRowView row in NM().DG.SelectedItems)
+                {
+                    DeleteNote((int)row["Id"], false, false);
+                }
 
-            UpdateDataGrid();
+                UpdateDataGrid();
+            }
         }
 
         public static void OpenNote(int Id)
