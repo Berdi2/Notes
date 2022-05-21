@@ -99,13 +99,14 @@ namespace Notes
             }
         }
 
+        static NotesMenu NM()
+        {
+            return Application.Current.Windows.OfType<NotesMenu>().FirstOrDefault();
+        }
+
         private void Row_DoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (DG.SelectedItem != null)
-            {
-                DataRowView row = (DataRowView)DG.SelectedItems[0];
-                OpenNote((int)row["Id"]);
-            }
+            OpenNote_DGSelectedItems();
         }
 
         private void BAddNote_Click(object sender, RoutedEventArgs e)
@@ -122,28 +123,92 @@ namespace Notes
             OpenNote(Id);
         }
 
-        public static void DeleteNote()
+        public static void DeleteNote(int Id, bool Update, bool ShowMessageBox)
         {
-            NotesMenu mainWindow = Application.Current.Windows.OfType<NotesMenu>().FirstOrDefault();
-            if (mainWindow.DG.SelectedItem != null)
+            if (ShowMessageBox)
             {
-                int loop = 0;
-                foreach (var item in mainWindow.DG.SelectedItems)
+                MessageBoxResult result = MessageBox.Show("Do you really want to delete this Note/these Notes?", "Notes", MessageBoxButton.OKCancel);
+                if (result == MessageBoxResult.OK)
                 {
-                    DataRowView row = (DataRowView)mainWindow.DG.SelectedItems[loop];
-                    ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + row["Id"] + "'");
-                    loop++;
-                    Console.WriteLine(loop);
-                    Console.WriteLine(row["Id"]);
+                    if (CheckIfNoteIsOpen(Id))
+                    {
+                        MessageBox.Show("The Note \"" + ClsDB.String("SELECT Title FROM Notes WHERE Id = '" + Id + "'") + "\" is open close it before deleting it!", "Notes");
+                    }
+                    else
+                    {
+                        ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Id + "'");
+                        if (Update)
+                            UpdateDataGrid();
+                    }
                 }
+            }
+            else
+            {
+                if (CheckIfNoteIsOpen(Id))
+                {
+                    MessageBox.Show("The Note \"" + ClsDB.String("SELECT Title FROM Notes WHERE Id = '" + Id + "'") + "\" is open close it before deleting it!", "Notes");
+                }
+                else
+                {
+                    ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Id + "'");
+                    if (Update)
+                        UpdateDataGrid();
+                }
+            }
+        }
+
+        public static void DeleteNote_DGSelectedItems()
+        {
+            MessageBoxResult result = MessageBox.Show("Do you really want to delete this Note/these Notes?", "Notes", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                foreach (DataRowView row in NM().DG.SelectedItems)
+                {
+                    DeleteNote((int)row["Id"], false, false);
+                }
+
                 UpdateDataGrid();
             }
         }
 
+        public static bool CheckIfNoteIsOpen(int Id)
+        {
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window is Note note)
+                {
+                    if (note.GetId() == Id)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            return false;
+        }
+
         public static void OpenNote(int Id)
         {
+            if (!CheckIfNoteIsOpen(Id))
+            {
                 Note note = new Note(Id);
                 note.Show();
+            }
+        }
+
+        public static void OpenNote_DGSelectedItems()
+        {
+            foreach (DataRowView row in NM().DG.SelectedItems)
+            {
+                OpenNote((int)row["Id"]);
+            }
         }
 
         public static int NullToZero(object Value)
@@ -160,13 +225,12 @@ namespace Notes
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            DeleteNote();
+            DeleteNote_DGSelectedItems();
         }
 
         public static void UpdateDataGrid()
         {
-            NotesMenu mainWindow = Application.Current.Windows.OfType<NotesMenu>().FirstOrDefault();
-            mainWindow.DG.ItemsSource = ClsDB.Get_DataTable("SELECT Id, Title FROM Notes").DefaultView;
+            NM().DG.ItemsSource = ClsDB.Get_DataTable("SELECT Id, Title FROM Notes").DefaultView;
         }
 
         public static void ChangeColor(int Id, string NoteColor, string TextColor, string XColor)
@@ -181,8 +245,10 @@ namespace Notes
 
         public static void SearchForUpdate(bool HiddenSearch)
         {
-            UpdateManager manager = new UpdateManager(new Uri("http://berdi.bplaced.net/Notes/updates.json"), "<RSAKeyValue><Modulus>2MWdrPFjPFB1IbmYJAyGHVCp/elJKbLNwXlS6gtPmoqP25LBojII7I3PPY1X+A6nLlxr5aUbcDKbNodrTgpHbjbd6f4z9aDCoJJMGGVPR/j3DOiDstRMR7m61gemQy7l5CQBoIyj3XNSf4/FoMckaIym69QWoT37aH2YiRzdqLIoeBP+KvWNj78buwC9LiVp3yy5ZAkX6dFuCUVKX9gnn/g248Kazrpc5OxC1EBrK4hbPMojPfwVDSqRNZHaPlGIZJiNJ1bgXxuyFhlPeq1lC4Ra8iyOrNyTP7KgENvNCR37hGM1zVeGKhQSfAgvkwT8//PNf3Px7yF475Dlr17O8TnLctg/fltLxo6Wq7uHehf9P9FN1fy3KMEC7SPy6JX7Jxqqqd50eNfCf2IkifqEDNRrcgxwV1zHyXhVo8AiVIaQC9C2V9j9v0Wc/mwzy+5SnsbW1nA6bZ4zELiVOx97I4E76gmfPfMHI3oHObwWJh+gNNCvzbGpVugqV+kLKmUkp81hrfwdvn6L6/H5y6a3OWxhuh1Bfrsqd6CcxLfpx6n+eN/MHeuQISV9A+PyOWhFhmOCbK4ML+SYGJNv0kXo8v2OpodZqFzyRjFLT629Iq4MPJ/+P3z+IIM1ZP/yZuZS5RNwOTpCVZp1kzsyBDUIh/aZt6XafpnmFXBY59EFRU1MXJ1FerRaNeeeD7G7LnFeO9/VLD4vswKj6451KRHLLIEFxibvDaNm3Yqr97HfkU7dF0j6e9C3MoUeHNxebS5hlCDis47+UI6HukSrfWjC81OwxVsjsjgpWECzy+FtirCJsrYwzpQ5UKwpxgHw7no48HMEP2xnkdweBI9eFK8P3nOk5gVlA4v/sLuoG1eE04LkRxNpy/c7syvtmSLXQTcSy/kJ87pB20NTNCm5eY5gZTklXh7tRk0i3wl81SAUeJFHYZfK5xJ8mnhA2jDrc61gi72WaEsvzJ55AXcUHQxLFsVnYGx8EJFKExOtfXLKPXig5rCK1ZVQQLAvkNcXIPQW2LmQJ1q+eMau/8Zgf61tSasfssYNoS0l79VzZPE1PyIE1/A0quH/35uFOf17SHaseMXDU/6PPz7J37KFrfwLKbodc103ISa0uU6TA8/Jd/GKsMPZxigv9W7ZCsbCdHRnnMlHcGrO4hzfeTRggtHsn5exoldWyWpRbQ+RDOrEBRQfxOWuoi/8Sc8sVBaTmFnJ7eNzN9+nkNQ2cyeN95zJBJhXToQoFxXqmdDwRFTzM+FL2gzfVrsVCEWGm7HhXWDHZ/7HHW50gf0fk9qhRMkHzctHMvdJpza78gePm0ooPe/qVsQdIodXpWeWLgiU6sVuMmsxo8gJvFcmxhA3xvZ2aQ==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>", new CultureInfo("en"));
-            manager.IncludeAlpha = Properties.Settings.Default.Alpha;
+            UpdateManager manager = new UpdateManager(new Uri("http://berdi.bplaced.net/Notes/updates.json"), "<RSAKeyValue><Modulus>2MWdrPFjPFB1IbmYJAyGHVCp/elJKbLNwXlS6gtPmoqP25LBojII7I3PPY1X+A6nLlxr5aUbcDKbNodrTgpHbjbd6f4z9aDCoJJMGGVPR/j3DOiDstRMR7m61gemQy7l5CQBoIyj3XNSf4/FoMckaIym69QWoT37aH2YiRzdqLIoeBP+KvWNj78buwC9LiVp3yy5ZAkX6dFuCUVKX9gnn/g248Kazrpc5OxC1EBrK4hbPMojPfwVDSqRNZHaPlGIZJiNJ1bgXxuyFhlPeq1lC4Ra8iyOrNyTP7KgENvNCR37hGM1zVeGKhQSfAgvkwT8//PNf3Px7yF475Dlr17O8TnLctg/fltLxo6Wq7uHehf9P9FN1fy3KMEC7SPy6JX7Jxqqqd50eNfCf2IkifqEDNRrcgxwV1zHyXhVo8AiVIaQC9C2V9j9v0Wc/mwzy+5SnsbW1nA6bZ4zELiVOx97I4E76gmfPfMHI3oHObwWJh+gNNCvzbGpVugqV+kLKmUkp81hrfwdvn6L6/H5y6a3OWxhuh1Bfrsqd6CcxLfpx6n+eN/MHeuQISV9A+PyOWhFhmOCbK4ML+SYGJNv0kXo8v2OpodZqFzyRjFLT629Iq4MPJ/+P3z+IIM1ZP/yZuZS5RNwOTpCVZp1kzsyBDUIh/aZt6XafpnmFXBY59EFRU1MXJ1FerRaNeeeD7G7LnFeO9/VLD4vswKj6451KRHLLIEFxibvDaNm3Yqr97HfkU7dF0j6e9C3MoUeHNxebS5hlCDis47+UI6HukSrfWjC81OwxVsjsjgpWECzy+FtirCJsrYwzpQ5UKwpxgHw7no48HMEP2xnkdweBI9eFK8P3nOk5gVlA4v/sLuoG1eE04LkRxNpy/c7syvtmSLXQTcSy/kJ87pB20NTNCm5eY5gZTklXh7tRk0i3wl81SAUeJFHYZfK5xJ8mnhA2jDrc61gi72WaEsvzJ55AXcUHQxLFsVnYGx8EJFKExOtfXLKPXig5rCK1ZVQQLAvkNcXIPQW2LmQJ1q+eMau/8Zgf61tSasfssYNoS0l79VzZPE1PyIE1/A0quH/35uFOf17SHaseMXDU/6PPz7J37KFrfwLKbodc103ISa0uU6TA8/Jd/GKsMPZxigv9W7ZCsbCdHRnnMlHcGrO4hzfeTRggtHsn5exoldWyWpRbQ+RDOrEBRQfxOWuoi/8Sc8sVBaTmFnJ7eNzN9+nkNQ2cyeN95zJBJhXToQoFxXqmdDwRFTzM+FL2gzfVrsVCEWGm7HhXWDHZ/7HHW50gf0fk9qhRMkHzctHMvdJpza78gePm0ooPe/qVsQdIodXpWeWLgiU6sVuMmsxo8gJvFcmxhA3xvZ2aQ==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>", new CultureInfo("en"))
+            {
+                IncludeAlpha = Properties.Settings.Default.Alpha
+            };
             var updaterUI = new UpdaterUI(manager, SynchronizationContext.Current);
             if (HiddenSearch)
             {
@@ -207,8 +273,24 @@ namespace Notes
         {
             if (e.Key == Key.Delete)
             {
-                DeleteNote();
+                DeleteNote_DGSelectedItems();
             }
+
+            if (e.Key == Key.Enter)
+            {
+                OpenNote_DGSelectedItems();
+            }
+        }
+
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            OpenNote_DGSelectedItems();
+        }
+
+        private void DG_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                e.Handled = true;
         }
     }
 }
