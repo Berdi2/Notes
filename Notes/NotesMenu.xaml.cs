@@ -183,7 +183,7 @@ namespace Notes
                     }
                     else
                     {
-                        return false;
+                        continue;
                     }
                 }
                 else
