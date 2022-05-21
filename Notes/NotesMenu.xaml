@@ -16,6 +16,7 @@
             </DataGrid.ItemContainerStyle>
             <DataGrid.ContextMenu>
                 <ContextMenu x:Name="CM">
+                    <MenuItem Header="Open" Click="Open_Click"/>
                     <MenuItem Header="Delete" Click="Delete_Click"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>

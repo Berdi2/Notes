@@ -99,13 +99,14 @@ namespace Notes
             }
         }
 
+        static NotesMenu NM()
+        {
+            return Application.Current.Windows.OfType<NotesMenu>().FirstOrDefault();
+        }
+
         private void Row_DoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (DG.SelectedItem != null)
-            {
-                DataRowView row = (DataRowView)DG.SelectedItems[0];
-                OpenNote((int)row["Id"]);
-            }
+            OpenNote_DGSelectedItems();
         }
 
         private void BAddNote_Click(object sender, RoutedEventArgs e)
@@ -122,28 +123,35 @@ namespace Notes
             OpenNote(Id);
         }
 
-        public static void DeleteNote()
+        public static void DeleteNote(int Id, bool Update)
         {
-            NotesMenu mainWindow = Application.Current.Windows.OfType<NotesMenu>().FirstOrDefault();
-            if (mainWindow.DG.SelectedItem != null)
+            ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Id + "'");
+            if (Update)
+            UpdateDataGrid();
+        }
+
+        public static void DeleteNote_DGSelectedItems()
+        {
+            foreach (DataRowView row in NM().DG.SelectedItems)
             {
-                int loop = 0;
-                foreach (var item in mainWindow.DG.SelectedItems)
-                {
-                    DataRowView row = (DataRowView)mainWindow.DG.SelectedItems[loop];
-                    ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + row["Id"] + "'");
-                    loop++;
-                    Console.WriteLine(loop);
-                    Console.WriteLine(row["Id"]);
-                }
-                UpdateDataGrid();
+                DeleteNote((int)row["Id"], false);
             }
+
+            UpdateDataGrid();
         }
 
         public static void OpenNote(int Id)
         {
                 Note note = new Note(Id);
                 note.Show();
+        }
+
+        public static void OpenNote_DGSelectedItems()
+        {
+            foreach (DataRowView row in NM().DG.SelectedItems)
+            {
+                OpenNote((int)row["Id"]);
+            }
         }
 
         public static int NullToZero(object Value)
@@ -160,13 +168,12 @@ namespace Notes
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            DeleteNote();
+            DeleteNote_DGSelectedItems();
         }
 
         public static void UpdateDataGrid()
         {
-            NotesMenu mainWindow = Application.Current.Windows.OfType<NotesMenu>().FirstOrDefault();
-            mainWindow.DG.ItemsSource = ClsDB.Get_DataTable("SELECT Id, Title FROM Notes").DefaultView;
+            NM().DG.ItemsSource = ClsDB.Get_DataTable("SELECT Id, Title FROM Notes").DefaultView;
         }
 
         public static void ChangeColor(int Id, string NoteColor, string TextColor, string XColor)
@@ -207,17 +214,18 @@ namespace Notes
         {
             if (e.Key == Key.Delete)
             {
-                DeleteNote();
+                DeleteNote_DGSelectedItems();
             }
 
             if (e.Key == Key.Enter)
             {
-                if (DG.SelectedItem != null)
-                {
-                    DataRowView row = (DataRowView)DG.SelectedItems[0];
-                    OpenNote((int)row["Id"]);
-                }
+                OpenNote_DGSelectedItems();
             }
+        }
+
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            OpenNote_DGSelectedItems();
         }
     }
 }
