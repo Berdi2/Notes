@@ -130,16 +130,30 @@ namespace Notes
                 MessageBoxResult result = MessageBox.Show("Do you really want to delete this Note/these Notes?", "Notes", MessageBoxButton.OKCancel);
                 if (result == MessageBoxResult.OK)
                 {
-                    ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Id + "'");
-                    if (Update)
-                    UpdateDataGrid();
+                    if (CheckIfNoteIsOpen(Id))
+                    {
+                        MessageBox.Show("The Note \"" + ClsDB.String("SELECT Title FROM Notes WHERE Id = '" + Id + "'") + "\" is open close it before deleting it!", "Notes");
+                    }
+                    else
+                    {
+                        ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Id + "'");
+                        if (Update)
+                            UpdateDataGrid();
+                    }
                 }
             }
             else
             {
-                ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Id + "'");
-                if (Update)
-                UpdateDataGrid();
+                if (CheckIfNoteIsOpen(Id))
+                {
+                    MessageBox.Show("The Note \"" + ClsDB.String("SELECT Title FROM Notes WHERE Id = '" + Id + "'") + "\" is open close it before deleting it!", "Notes");
+                }
+                else
+                {
+                    ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Id + "'");
+                    if (Update)
+                        UpdateDataGrid();
+                }
             }
         }
 
@@ -155,6 +169,29 @@ namespace Notes
 
                 UpdateDataGrid();
             }
+        }
+
+        public static bool CheckIfNoteIsOpen(int Id)
+        {
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window is Note note)
+                {
+                    if (note.GetId() == Id)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            return false;
         }
 
         public static void OpenNote(int Id)

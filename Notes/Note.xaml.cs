@@ -63,6 +63,11 @@ namespace Notes
             }
         }
 
+        public int GetId()
+        {
+            return Id;
+        }
+
         private void LSettings_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (isCollapsed == true)
