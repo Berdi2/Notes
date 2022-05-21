@@ -125,9 +125,13 @@ namespace Notes
 
         public static void DeleteNote(int Id, bool Update)
         {
-            ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Id + "'");
-            if (Update)
-            UpdateDataGrid();
+            MessageBoxResult result = MessageBox.Show("Do you really want to delete this Note/these Notes?", "Notes", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Id + "'");
+                if (Update)
+                    UpdateDataGrid();
+            }
         }
 
         public static void DeleteNote_DGSelectedItems()
