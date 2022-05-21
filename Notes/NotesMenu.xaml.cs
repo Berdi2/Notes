@@ -196,8 +196,11 @@ namespace Notes
 
         public static void OpenNote(int Id)
         {
+            if (!CheckIfNoteIsOpen(Id))
+            {
                 Note note = new Note(Id);
                 note.Show();
+            }
         }
 
         public static void OpenNote_DGSelectedItems()
