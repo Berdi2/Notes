@@ -283,5 +283,11 @@ namespace Notes
         {
             OpenNote_DGSelectedItems();
         }
+
+        private void DG_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                e.Handled = true;
+        }
     }
 }
