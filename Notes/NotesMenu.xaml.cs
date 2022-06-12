@@ -278,5 +278,24 @@ namespace Notes
             if (e.Key == Key.Enter)
                 e.Handled = true;
         }
+
+        private void DG_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ContextMenu CM = new ContextMenu();
+            MenuItem MIOpen = new MenuItem
+            {
+                Header = "Open"
+            };
+            MIOpen.Click += Open_Click;
+            CM.Items.Add(MIOpen);
+            MenuItem MIDelete = new MenuItem
+            {
+                Header = "Delete"
+            };
+            MIDelete.Click += Delete_Click;
+            CM.Items.Add(MIDelete);
+            if (DG.SelectedIndex >= 0)
+                CM.IsOpen = true;
+        }
     }
 }
