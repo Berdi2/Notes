@@ -11,9 +11,9 @@
         <TextBox x:Name="TBFontSize" HorizontalAlignment="Left" Margin="10,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" PreviewTextInput="TBFontSize_PreviewTextInput"/>
         <Label x:Name="label" Content="Content Font Size" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top"/>
         <Button x:Name="BApply" Content="Apply" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Click="BApply_Click"/>
-        <Label x:Name="label1" Content="Version: 1.8" HorizontalAlignment="Left" Margin="116,7,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="LVersion" Content="Version: 1.9 Alpha 1" HorizontalAlignment="Left" Margin="116,7,0,0" VerticalAlignment="Top"/>
         <CheckBox x:Name="CBIsAlpha" Content="Alpha Client" HorizontalAlignment="Left" Margin="10,89,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="BChangelog" Content="Changelog" HorizontalAlignment="Left" Margin="191,10,0,0" VerticalAlignment="Top" Click="BChangelog_Click"/>
+        <Button x:Name="BChangelog" Content="Changelog" HorizontalAlignment="Left" Margin="235,10,0,0" VerticalAlignment="Top" Click="BChangelog_Click"/>
 
     </Grid>
 </Window>
