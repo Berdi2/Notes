@@ -25,6 +25,8 @@ namespace Notes
     {
         int Id = 0;
         bool isCollapsed = false;
+        private bool clickedTextboxContent = false;
+        private bool clickedTextboxTitle = false;
 
         public Note(int Id_new)
         {
@@ -132,6 +134,15 @@ namespace Notes
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
+
+            if (!clickedTextboxTitle && TBTitle.IsFocused)
+                TBLosesFocus(TBTitle);
+
+            if (!clickedTextboxContent && RTBContent.IsFocused)
+                TBLosesFocus(RTBContent);
+
+            clickedTextboxContent = false;
+            clickedTextboxTitle = false;
         }
 
         private void TBTitle_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -235,8 +246,18 @@ namespace Notes
 
         private void Window_LocationChanged(object sender, EventArgs e)
         {
-            TBLosesFocus(TBTitle);
-            TBLosesFocus(RTBContent);
+            //TBLosesFocus(TBTitle);
+            //TBLosesFocus(RTBContent);
+        }
+
+        private void RTBContent_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            clickedTextboxContent = true;
+        }
+
+        private void TBTitle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            clickedTextboxTitle = true;
         }
     }
 }
