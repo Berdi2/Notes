@@ -99,7 +99,7 @@ namespace Notes
             }
         }
 
-        static NotesMenu NM()
+        public static NotesMenu NM()
         {
             return Application.Current.Windows.OfType<NotesMenu>().FirstOrDefault();
         }

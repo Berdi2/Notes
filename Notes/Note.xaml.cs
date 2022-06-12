@@ -97,9 +97,7 @@ namespace Notes
 
             NotesMenu.ClsDB.Execute_SQL("UPDATE Notes SET Title = '" + TBTitle.Text + "', Content = '" + xaml + "' WHERE Id = '" + Id + "'");
 
-            NotesMenu notesMenu = Application.Current.Windows.OfType<NotesMenu>().SingleOrDefault();
-
-            if (notesMenu != null)
+            if (NotesMenu.NM() != null)
             {
                 NotesMenu.UpdateDataGrid();
             }
