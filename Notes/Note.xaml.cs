@@ -169,6 +169,7 @@ namespace Notes
         {
             if (sender is TextBox || sender is RichTextBox)
             {
+                Keyboard.ClearFocus();
                 sender.Focusable = false;
                 sender.Cursor = Cursors.Arrow;
                 sender.BorderThickness = new Thickness(0);
@@ -224,6 +225,18 @@ namespace Notes
                 SP.Visibility = Visibility.Collapsed;
                 LSettings.ToolTip = "Expand (Strg + F)";
             }
+        }
+
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            TBLosesFocus(TBTitle);
+            TBLosesFocus(RTBContent);
+        }
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+            TBLosesFocus(TBTitle);
+            TBLosesFocus(RTBContent);
         }
     }
 }
