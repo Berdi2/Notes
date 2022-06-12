@@ -123,51 +123,37 @@ namespace Notes
             OpenNote(Id);
         }
 
-        public static void DeleteNote(int Id, bool Update, bool ShowMessageBox)
+        public static void DeleteNotes(int[] Ids = null, bool SelectedItems = false)
         {
-            if (ShowMessageBox)
+            bool isOneOpen = false;
+
+            if (SelectedItems && Ids == null)
             {
-                MessageBoxResult result = MessageBox.Show("Do you really want to delete this Note/these Notes?", "Notes", MessageBoxButton.OKCancel);
-                if (result == MessageBoxResult.OK)
+                Ids = new int[NM().DG.SelectedItems.Count];
+                for (int i = 0; i < NM().DG.SelectedItems.Count; i++)
                 {
-                    if (CheckIfNoteIsOpen(Id))
-                    {
-                        MessageBox.Show("The Note \"" + ClsDB.String("SELECT Title FROM Notes WHERE Id = '" + Id + "'") + "\" is open close it before deleting it!", "Notes");
-                    }
-                    else
-                    {
-                        ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Id + "'");
-                        if (Update)
-                            UpdateDataGrid();
-                    }
+                    DataRowView row = (DataRowView)NM().DG.SelectedItems[i];
+                    Ids[i] = (int)row["Id"];
                 }
             }
-            else
+
+            foreach (int Note in Ids)
             {
-                if (CheckIfNoteIsOpen(Id))
+                if (CheckIfNoteIsOpen(Note))
                 {
-                    MessageBox.Show("The Note \"" + ClsDB.String("SELECT Title FROM Notes WHERE Id = '" + Id + "'") + "\" is open close it before deleting it!", "Notes");
-                }
-                else
-                {
-                    ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Id + "'");
-                    if (Update)
-                        UpdateDataGrid();
+                    MessageBox.Show("The Note \"" + ClsDB.String("SELECT Title FROM Notes WHERE Id = '" + Note + "'") + "\" is open close it before deleting it!", "Notes");
+                    isOneOpen = true;
                 }
             }
-        }
 
-        public static void DeleteNote_DGSelectedItems()
-        {
-            MessageBoxResult result = MessageBox.Show("Do you really want to delete this Note/these Notes?", "Notes", MessageBoxButton.OKCancel);
-            if (result == MessageBoxResult.OK)
+            if (!isOneOpen)
             {
-                foreach (DataRowView row in NM().DG.SelectedItems)
+                if (MessageBox.Show("Do you really want to delete this Note/these Notes?", "Notes", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                 {
-                    DeleteNote((int)row["Id"], false, false);
+                    foreach (int Note in Ids)
+                        ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Note + "'");
+                    UpdateDataGrid();
                 }
-
-                UpdateDataGrid();
             }
         }
 
@@ -225,7 +211,7 @@ namespace Notes
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            DeleteNote_DGSelectedItems();
+            DeleteNotes(SelectedItems: true);
         }
 
         public static void UpdateDataGrid()
@@ -273,7 +259,7 @@ namespace Notes
         {
             if (e.Key == Key.Delete)
             {
-                DeleteNote_DGSelectedItems();
+                DeleteNotes(SelectedItems: true);
             }
 
             if (e.Key == Key.Enter)
