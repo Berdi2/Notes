@@ -91,6 +91,20 @@ namespace Notes
                 return (object)cmd_Command.ExecuteScalar();
             }
 
+            public static int[] Ints(string SQL_Text, int length)
+            {
+                SqlConnection cn_connection = Get_DB_Connection();
+                int[] result = new int[length];
+                for (int i = 0; i < length; i++)
+                {
+                    int i_i = i + 1;
+                    string SQL_Text_new = SQL_Text + i_i;
+                    SqlCommand cmd_Command = new SqlCommand(SQL_Text_new, cn_connection);
+                    result[i] = (int)cmd_Command.ExecuteScalar();
+                }
+                return result;
+            }
+
             public static void Close_DB_Connection()
             {
                 string cn_String = Get_cn_String();
@@ -217,6 +231,17 @@ namespace Notes
         public static void UpdateDataGrid()
         {
             NM().DG.ItemsSource = ClsDB.Get_DataTable("SELECT Id, Title FROM Notes").DefaultView;
+
+            int Count = ClsDB.Int("SELECT COUNT(*) FROM Notes");
+            int[] Ints = ClsDB.Ints("SELECT Id FROM(SELECT ROW_NUMBER() Over (Order By Id) as RowNum, * From Notes) t2 Where RowNum = ", Count);
+
+            if (Ints != null)
+            {
+                foreach (int Note in Ints)
+                {
+                    Console.WriteLine(Note);
+                }
+            }
         }
 
         public static void ChangeColor(int Id, string NoteColor, string TextColor, string XColor)
