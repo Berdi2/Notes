@@ -159,7 +159,8 @@ namespace Notes
 
             if (SelectedItems && Ids == null)
             {
-                Ids = new int[NM().LV.SelectedItems.Count];
+                if (NM().LV.SelectedItems.Count > 0)
+                    Ids = new int[NM().LV.SelectedItems.Count];
                 for (int i = 0; i < NM().LV.SelectedItems.Count; i++)
                 {
                     NoteDisplay Note = (NoteDisplay)NM().LV.SelectedItems[i];
@@ -167,16 +168,19 @@ namespace Notes
                 }
             }
 
-            foreach (int Note in Ids)
+            if (Ids != null)
             {
-                if (CheckIfNoteIsOpen(Note))
+                foreach (int Note in Ids)
                 {
-                    MessageBox.Show("The Note \"" + ClsDB.String("SELECT Title FROM Notes WHERE Id = '" + Note + "'") + "\" is open close it before deleting it!", "Notes");
-                    isOneOpen = true;
+                    if (CheckIfNoteIsOpen(Note))
+                    {
+                        MessageBox.Show("The Note \"" + ClsDB.String("SELECT Title FROM Notes WHERE Id = '" + Note + "'") + "\" is open close it before deleting it!", "Notes");
+                        isOneOpen = true;
+                    }
                 }
             }
 
-            if (!isOneOpen)
+            if (!isOneOpen && Ids != null)
             {
                 if (MessageBox.Show("Do you really want to delete this Note/these Notes?", "Notes", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                 {
