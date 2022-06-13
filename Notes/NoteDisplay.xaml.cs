@@ -21,11 +21,20 @@ namespace Notes
     /// </summary>
     public partial class NoteDisplay : UserControl
     {
-        public NoteDisplay(int Id)
+        public NoteDisplay(int Id_new)
         {
             InitializeComponent();
 
-            userControl.Id = Id;
+            userControl.Id = Id_new;
+            userControl.TitleText = NotesMenu.ClsDB.String("SELECT Title FROM Notes WHERE Id = " + Id_new);
+            userControl.ContentText = NotesMenu.StringToFlowDoc(NotesMenu.ClsDB.String("SELECT Content FROM Notes WHERE Id = " + Id_new));
+
+            var bc = new BrushConverter();
+            Brush NoteBrush = (Brush)bc.ConvertFrom(NotesMenu.ClsDB.String("SELECT NoteColor FROM Notes WHERE Id = '" + Id_new + "'"));
+            Brush TextBrush = (Brush)bc.ConvertFrom(NotesMenu.ClsDB.String("SELECT TextColor FROM Notes WHERE Id = '" + Id_new + "'"));
+            rect.Fill = NoteBrush;
+            LTitle.Foreground = TextBrush;
+            LContent.Foreground = TextBrush;
         }
 
         public string TitleText
@@ -34,10 +43,10 @@ namespace Notes
             set { LTitle.Content = value; }
         }
 
-        public string ContentText
+        public FlowDocument ContentText
         {
-            get { return (string)LContent.Text; }
-            set { LContent.Text = value; }
+            get { return LContent.Document; }
+            set { LContent.Document = value; }
         }
 
         public int Id { get; set; }

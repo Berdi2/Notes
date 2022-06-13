@@ -18,6 +18,8 @@ using System.Collections;
 using System.Threading;
 using System.Globalization;
 using nUpdate.Updating;
+using System.Windows.Markup;
+using System.IO;
 
 namespace Notes
 {
@@ -30,7 +32,7 @@ namespace Notes
         {
             InitializeComponent();
 
-            UpdateDataGrid();
+            UpdateListView();
 
             SearchForUpdate(true);
         }
@@ -118,9 +120,21 @@ namespace Notes
             return Application.Current.Windows.OfType<NotesMenu>().FirstOrDefault();
         }
 
-        private void Row_DoubleClick(object sender, MouseButtonEventArgs e)
+        public static FlowDocument StringToFlowDoc(string xamlString)
         {
-            OpenNote_DGSelectedItems();
+            if (xamlString != "")
+            {
+                StringReader stringReader = new StringReader(xamlString);
+                System.Xml.XmlReader xmlReader = System.Xml.XmlReader.Create(stringReader);
+                return XamlReader.Load(xmlReader) as FlowDocument;
+            }
+            FlowDocument flowDocument = new FlowDocument();
+            return flowDocument;
+        }
+
+        private static void LVItem_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            OpenNote_LVSelectedItems();
         }
 
         private void BAddNote_Click(object sender, RoutedEventArgs e)
@@ -133,7 +147,7 @@ namespace Notes
         {
             int Id = NullToZero(ClsDB.Obj("SELECT MAX(Id) FROM Notes")) + 1;
             ClsDB.Execute_SQL("INSERT INTO Notes VALUES('" + Id + "','','','" + NoteColor + "','" + TextColor + "','" + XColor + "')");
-            UpdateDataGrid();
+            UpdateListView();
             OpenNote(Id);
         }
 
@@ -141,13 +155,15 @@ namespace Notes
         {
             bool isOneOpen = false;
 
+            //Weist Ids einen Wert zu wenn die angewählten Notes gelöscht werden sollen
+
             if (SelectedItems && Ids == null)
             {
-                Ids = new int[NM().DG.SelectedItems.Count];
-                for (int i = 0; i < NM().DG.SelectedItems.Count; i++)
+                Ids = new int[NM().LV.SelectedItems.Count];
+                for (int i = 0; i < NM().LV.SelectedItems.Count; i++)
                 {
-                    DataRowView row = (DataRowView)NM().DG.SelectedItems[i];
-                    Ids[i] = (int)row["Id"];
+                    NoteDisplay Note = (NoteDisplay)NM().LV.SelectedItems[i];
+                    Ids[i] = Note.Id;
                 }
             }
 
@@ -166,7 +182,7 @@ namespace Notes
                 {
                     foreach (int Note in Ids)
                         ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Note + "'");
-                    UpdateDataGrid();
+                    UpdateListView();
                 }
             }
         }
@@ -203,11 +219,11 @@ namespace Notes
             }
         }
 
-        public static void OpenNote_DGSelectedItems()
+        public static void OpenNote_LVSelectedItems()
         {
-            foreach (DataRowView row in NM().DG.SelectedItems)
+            foreach (NoteDisplay Note in NM().LV.SelectedItems)
             {
-                OpenNote((int)row["Id"]);
+                OpenNote(Note.Id);
             }
         }
 
@@ -223,14 +239,14 @@ namespace Notes
             }
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        private static void Delete_Click(object sender, RoutedEventArgs e)
         {
             DeleteNotes(SelectedItems: true);
         }
 
-        public static void UpdateDataGrid()
+        public static void UpdateListView()
         {
-            NM().DG.ItemsSource = ClsDB.Get_DataTable("SELECT Id, Title FROM Notes").DefaultView;
+            NM().LV.Items.Clear();
 
             int Count = ClsDB.Int("SELECT COUNT(*) FROM Notes");
             int[] Ints = ClsDB.Ints("SELECT Id FROM(SELECT ROW_NUMBER() Over (Order By Id) as RowNum, * From Notes) t2 Where RowNum = ", Count);
@@ -239,7 +255,10 @@ namespace Notes
             {
                 foreach (int Note in Ints)
                 {
-
+                    NoteDisplay ND = new NoteDisplay(Note);
+                    ND.MouseDoubleClick += LVItem_DoubleClick;
+                    ND.MouseRightButtonUp += LVItem_MouseRightButtonUp;
+                    NM().LV.Items.Add(ND);
                 }
             }
         }
@@ -247,11 +266,6 @@ namespace Notes
         public static void ChangeColor(int Id, string NoteColor, string TextColor, string XColor)
         {
             ClsDB.Execute_SQL("UPDATE Notes SET NoteColor = '" + NoteColor + "', TextColor = '" + TextColor + "', XColor = '" + XColor + "' WHERE Id = '" + Id + "'");
-        }
-
-        private void DG_LayoutUpdated(object sender, EventArgs e)
-        {
-            DG.Columns[0].Visibility = Visibility.Collapsed;
         }
 
         public static void SearchForUpdate(bool HiddenSearch)
@@ -289,22 +303,16 @@ namespace Notes
 
             if (e.Key == Key.Enter)
             {
-                OpenNote_DGSelectedItems();
+                OpenNote_LVSelectedItems();
             }
         }
 
-        private void Open_Click(object sender, RoutedEventArgs e)
+        private static void Open_Click(object sender, RoutedEventArgs e)
         {
-            OpenNote_DGSelectedItems();
+            OpenNote_LVSelectedItems();
         }
 
-        private void DG_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-                e.Handled = true;
-        }
-
-        private void DG_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private static void LVItem_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
             ContextMenu CM = new ContextMenu();
             MenuItem MIOpen = new MenuItem
@@ -319,8 +327,7 @@ namespace Notes
             };
             MIDelete.Click += Delete_Click;
             CM.Items.Add(MIDelete);
-            if (DG.SelectedIndex >= 0)
-                CM.IsOpen = true;
+            CM.IsOpen = true;
         }
     }
 }

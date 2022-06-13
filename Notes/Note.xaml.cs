@@ -101,7 +101,7 @@ namespace Notes
 
             if (NotesMenu.NM() != null)
             {
-                NotesMenu.UpdateDataGrid();
+                NotesMenu.UpdateListView();
             }
         }
 
