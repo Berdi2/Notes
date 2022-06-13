@@ -7,8 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListView x:Name="listView">
-            <Rectangle Height="100" Width="100" Fill="#FFFFDB5B"/>
-        </ListView>
+        <Rectangle Height="150" Width="150" Fill="#FFFFDB5B" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="LTitle" Content="Title" HorizontalAlignment="Left" Margin="14,14,0,0" VerticalAlignment="Top" Width="142"/>
+        <TextBlock x:Name="TBContent" HorizontalAlignment="Left" Margin="14,45,0,0" TextWrapping="Wrap" Text="Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat. Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." VerticalAlignment="Top" Height="111" Width="142"/>
+        <Button HorizontalAlignment="Left" Height="150" Margin="10,10,0,0" VerticalAlignment="Top" Width="150" Tag="1" Background="#FFFFDB5B" BorderBrush="{x:Null}" MouseDoubleClick="Button_MouseDoubleClick" BorderThickness="0,0,0,0" Visibility="Visible" Opacity="0"/>
     </Grid>
 </Window>

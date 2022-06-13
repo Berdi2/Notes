@@ -239,7 +239,7 @@ namespace Notes
             {
                 foreach (int Note in Ints)
                 {
-                    Console.WriteLine(Note);
+
                 }
             }
         }

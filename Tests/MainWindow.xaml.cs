@@ -24,5 +24,10 @@ namespace Tests
         {
             InitializeComponent();
         }
+
+        private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
     }
 }
