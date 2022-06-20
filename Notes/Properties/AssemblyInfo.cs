@@ -1,4 +1,5 @@
-﻿using nUpdate.Core;
+﻿//using nUpdate.Core;
+using nUpdate;
 using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;

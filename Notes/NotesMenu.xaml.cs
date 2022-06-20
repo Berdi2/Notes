@@ -20,6 +20,7 @@ using System.Globalization;
 using nUpdate.Updating;
 using System.Windows.Markup;
 using System.IO;
+using nUpdate.UI.WPF;
 
 namespace Notes
 {

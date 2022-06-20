@@ -55,8 +55,14 @@
     <ApplicationIcon>Screenshot_791_.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nUpdate.ProvideTAP">
-      <HintPath>E:\Allgemeines\Programming Stuff\nUpdate\nUpdate.ProvideTAP\nUpdate.ProvideTAP.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="nUpdate, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\nUpdate.4.0.0\lib\netstandard2.0\nUpdate.dll</HintPath>
+    </Reference>
+    <Reference Include="nUpdate.UI.WPF, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\nUpdate.UI.WPF.1.0.0\lib\net461\nUpdate.UI.WPF.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -100,6 +106,9 @@
     <Compile Include="Changelog.xaml.cs">
       <DependentUpon>Changelog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Feedback.xaml.cs">
+      <DependentUpon>Feedback.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -111,6 +120,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ColorEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Feedback.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
