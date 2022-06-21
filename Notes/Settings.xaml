@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notes"
         mc:Ignorable="d"
-        Title="Settings" Height="450" Width="800" KeyDown="Window_KeyDown">
+        Title="Settings" Height="176" Width="324" KeyDown="Window_KeyDown" SizeToContent="Manual">
     <Grid>
         <Button x:Name="BUpdate" Content="Check for Updates" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="BUpdate_Click"/>
         <TextBox x:Name="TBFontSize" HorizontalAlignment="Left" Margin="10,66,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" PreviewTextInput="TBFontSize_PreviewTextInput"/>
