@@ -43,7 +43,7 @@ namespace Notes
         {
             public static string Get_cn_String()
             {
-                return "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=" + Environment.CurrentDirectory + "\\Database1.mdf;Integrated Security=True";
+                return "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=" + Environment.CurrentDirectory + "\\DB.mdf;Integrated Security=True";
             }
 
             public static SqlConnection Get_DB_Connection()
