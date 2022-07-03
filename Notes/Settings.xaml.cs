@@ -68,5 +68,11 @@ namespace Notes
                 BApply_Click(sender, e);
             }
         }
+
+        private void BChangelog_Click(object sender, RoutedEventArgs e)
+        {
+            Changelog changelog = new Changelog();
+            changelog.Show();
+        }
     }
 }

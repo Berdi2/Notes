@@ -25,6 +25,8 @@ namespace Notes
     {
         int Id = 0;
         bool isCollapsed = false;
+        private bool clickedTextboxContent = false;
+        private bool clickedTextboxTitle = false;
 
         public Note(int Id_new)
         {
@@ -97,11 +99,9 @@ namespace Notes
 
             NotesMenu.ClsDB.Execute_SQL("UPDATE Notes SET Title = '" + TBTitle.Text + "', Content = '" + xaml + "' WHERE Id = '" + Id + "'");
 
-            NotesMenu notesMenu = Application.Current.Windows.OfType<NotesMenu>().SingleOrDefault();
-
-            if (notesMenu != null)
+            if (NotesMenu.NM() != null)
             {
-                NotesMenu.UpdateDataGrid();
+                NotesMenu.UpdateListView();
             }
         }
 
@@ -134,6 +134,15 @@ namespace Notes
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
+
+            if (!clickedTextboxTitle && TBTitle.IsFocused)
+                TBLosesFocus(TBTitle);
+
+            if (!clickedTextboxContent && RTBContent.IsFocused)
+                TBLosesFocus(RTBContent);
+
+            clickedTextboxContent = false;
+            clickedTextboxTitle = false;
         }
 
         private void TBTitle_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -171,6 +180,7 @@ namespace Notes
         {
             if (sender is TextBox || sender is RichTextBox)
             {
+                Keyboard.ClearFocus();
                 sender.Focusable = false;
                 sender.Cursor = Cursors.Arrow;
                 sender.BorderThickness = new Thickness(0);
@@ -226,6 +236,28 @@ namespace Notes
                 SP.Visibility = Visibility.Collapsed;
                 LSettings.ToolTip = "Expand (Strg + F)";
             }
+        }
+
+        private void Window_Deactivated(object sender, EventArgs e)
+        {
+            TBLosesFocus(TBTitle);
+            TBLosesFocus(RTBContent);
+        }
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+            //TBLosesFocus(TBTitle);
+            //TBLosesFocus(RTBContent);
+        }
+
+        private void RTBContent_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            clickedTextboxContent = true;
+        }
+
+        private void TBTitle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            clickedTextboxTitle = true;
         }
     }
 }
