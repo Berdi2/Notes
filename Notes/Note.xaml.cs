@@ -38,7 +38,7 @@ namespace Notes
             Brush NoteBrush = (Brush)bc.ConvertFrom(NotesMenu.ClsDB.String("SELECT NoteColor FROM Notes WHERE Id = '" + Id + "'"));
             Brush TextBrush = (Brush)bc.ConvertFrom(NotesMenu.ClsDB.String("SELECT TextColor FROM Notes WHERE Id = '" + Id + "'"));
             Brush XBrush = (Brush)bc.ConvertFrom(NotesMenu.ClsDB.String("SELECT XColor FROM Notes WHERE Id = '" + Id + "'"));
-            this.Background = NoteBrush;
+            Background = NoteBrush;
             TBTitle.Background = NoteBrush;
             TBTitle.BorderBrush = NoteBrush;
             TBTitle.Foreground = TextBrush;
