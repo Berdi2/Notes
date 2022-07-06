@@ -29,7 +29,7 @@ namespace Notes
         {
             NotesMenu.AddNote(CP_NoteColor.SelectedColor.ToString(), CP_TextColor.SelectedColor.ToString(), CP_XColor.SelectedColor.ToString());
 
-            this.Close();
+            Close();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
