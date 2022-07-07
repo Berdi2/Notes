@@ -107,7 +107,7 @@ namespace Notes
 
         private void LClose_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void LSave_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -133,8 +133,6 @@ namespace Notes
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            DragMove();
-
             if (!clickedTextboxTitle && TBTitle.IsFocused)
                 TBLosesFocus(TBTitle);
 
@@ -143,6 +141,8 @@ namespace Notes
 
             clickedTextboxContent = false;
             clickedTextboxTitle = false;
+
+            DragMove();
         }
 
         private void TBTitle_MouseDoubleClick(object sender, MouseButtonEventArgs e)
