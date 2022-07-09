@@ -35,9 +35,9 @@ namespace Notes
             Id = Id_new;
 
             var bc = new BrushConverter();
-            Brush NoteBrush = (Brush)bc.ConvertFrom(NotesMenu.ClsDB.String("SELECT NoteColor FROM Notes WHERE Id = '" + Id + "'"));
-            Brush TextBrush = (Brush)bc.ConvertFrom(NotesMenu.ClsDB.String("SELECT TextColor FROM Notes WHERE Id = '" + Id + "'"));
-            Brush XBrush = (Brush)bc.ConvertFrom(NotesMenu.ClsDB.String("SELECT XColor FROM Notes WHERE Id = '" + Id + "'"));
+            Brush NoteBrush = (Brush)bc.ConvertFrom(Methods.ClsDB.String("SELECT NoteColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
+            Brush TextBrush = (Brush)bc.ConvertFrom(Methods.ClsDB.String("SELECT TextColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
+            Brush XBrush = (Brush)bc.ConvertFrom(Methods.ClsDB.String("SELECT XColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
             Background = NoteBrush;
             TBTitle.Background = NoteBrush;
             TBTitle.BorderBrush = NoteBrush;
@@ -55,11 +55,13 @@ namespace Notes
 
             SP.Visibility = Visibility.Collapsed;
 
-            TBTitle.Text = NotesMenu.ClsDB.String("SELECT Title FROM Notes WHERE Id = '" + Id + "'");
+            TBTitle.Text = Methods.ClsDB.String("SELECT Title FROM Notes WHERE Id = '" + Id + "'", "DBUser");
 
-            if (NotesMenu.ClsDB.String("SELECT Content FROM Notes WHERE Id = '" + Id + "'") != "")
+            string Content = Methods.ClsDB.String("SELECT Content FROM Notes WHERE Id = '" + Id + "'", "DBUser");
+
+            if (Content != "")
             {
-                FlowDocument doc = XamlReader.Parse(NotesMenu.ClsDB.String("SELECT Content FROM Notes WHERE Id = '" + Id + "'")) as FlowDocument;
+                FlowDocument doc = XamlReader.Parse(Content) as FlowDocument;
 
                 RTBContent.Document = doc;
             }
@@ -97,7 +99,7 @@ namespace Notes
             XamlWriter.Save(RTBContent.Document, wr);
             string xaml = wr.ToString();
 
-            NotesMenu.ClsDB.Execute_SQL("UPDATE Notes SET Title = '" + TBTitle.Text + "', Content = '" + xaml + "' WHERE Id = '" + Id + "'");
+            Methods.ClsDB.Execute_SQL("UPDATE Notes SET Title = '" + TBTitle.Text + "', Content = '" + xaml + "' WHERE Id = '" + Id + "'", "DBUser");
 
             if (NotesMenu.NM() != null)
             {
@@ -242,12 +244,6 @@ namespace Notes
         {
             TBLosesFocus(TBTitle);
             TBLosesFocus(RTBContent);
-        }
-
-        private void Window_LocationChanged(object sender, EventArgs e)
-        {
-            //TBLosesFocus(TBTitle);
-            //TBLosesFocus(RTBContent);
         }
 
         private void RTBContent_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

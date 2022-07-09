@@ -29,9 +29,9 @@ namespace Notes
             Id = Id_new;
             note = note_new;
 
-            CP_NoteColor.SelectedColor = (Color)ColorConverter.ConvertFromString(NotesMenu.ClsDB.String("SELECT NoteColor FROM Notes WHERE Id = '" + Id + "'"));
-            CP_TextColor.SelectedColor = (Color)ColorConverter.ConvertFromString(NotesMenu.ClsDB.String("SELECT TextColor FROM Notes WHERE Id = '" + Id + "'"));
-            CP_XColor.SelectedColor = (Color)ColorConverter.ConvertFromString(NotesMenu.ClsDB.String("SELECT XColor FROM Notes WHERE Id = '" + Id + "'"));
+            CP_NoteColor.SelectedColor = (Color)ColorConverter.ConvertFromString(Methods.ClsDB.String("SELECT NoteColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
+            CP_TextColor.SelectedColor = (Color)ColorConverter.ConvertFromString(Methods.ClsDB.String("SELECT TextColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
+            CP_XColor.SelectedColor = (Color)ColorConverter.ConvertFromString(Methods.ClsDB.String("SELECT XColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
         }
 
         private void BFinish_Click(object sender, RoutedEventArgs e)
@@ -42,7 +42,7 @@ namespace Notes
 
             NotesMenu.OpenNote(Id);
 
-            this.Close();
+            Close();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

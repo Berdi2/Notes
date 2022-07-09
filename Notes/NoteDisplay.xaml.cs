@@ -26,12 +26,12 @@ namespace Notes
             InitializeComponent();
 
             userControl.Id = Id_new;
-            userControl.TitleText = NotesMenu.ClsDB.String("SELECT Title FROM Notes WHERE Id = " + Id_new);
-            userControl.ContentText = NotesMenu.StringToFlowDoc(NotesMenu.ClsDB.String("SELECT Content FROM Notes WHERE Id = " + Id_new));
+            userControl.TitleText = Methods.ClsDB.String("SELECT Title FROM Notes WHERE Id = " + Id_new, "DBUser");
+            userControl.ContentText = Methods.StringToFlowDoc(Methods.ClsDB.String("SELECT Content FROM Notes WHERE Id = " + Id_new, "DBUser"));
 
             var bc = new BrushConverter();
-            Brush NoteBrush = (Brush)bc.ConvertFrom(NotesMenu.ClsDB.String("SELECT NoteColor FROM Notes WHERE Id = '" + Id_new + "'"));
-            Brush TextBrush = (Brush)bc.ConvertFrom(NotesMenu.ClsDB.String("SELECT TextColor FROM Notes WHERE Id = '" + Id_new + "'"));
+            Brush NoteBrush = (Brush)bc.ConvertFrom(Methods.ClsDB.String("SELECT NoteColor FROM Notes WHERE Id = '" + Id_new + "'", "DBUser"));
+            Brush TextBrush = (Brush)bc.ConvertFrom(Methods.ClsDB.String("SELECT TextColor FROM Notes WHERE Id = '" + Id_new + "'", "DBUser"));
             rect.Fill = NoteBrush;
             LTitle.Foreground = TextBrush;
             LContent.Foreground = TextBrush;
