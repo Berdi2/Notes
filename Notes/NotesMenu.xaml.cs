@@ -38,9 +38,99 @@ namespace Notes
             SearchForUpdate(true);
         }
 
+        public static class ClsDB
+
+        {
+            public static string Get_cn_String()
+            {
+                return "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=" + Environment.CurrentDirectory + "\\DB.mdf;Integrated Security=True";
+            }
+
+            public static SqlConnection Get_DB_Connection()
+            {
+                string cn_String = Get_cn_String();
+                SqlConnection cn_connection = new SqlConnection(cn_String);
+                if (cn_connection.State != ConnectionState.Open) cn_connection.Open();
+                return cn_connection;
+            }
+            public static DataTable Get_DataTable(string SQL_Text)
+            {
+                SqlConnection cn_connection = Get_DB_Connection();
+                DataTable table = new DataTable();
+                SqlDataAdapter adapter = new SqlDataAdapter(SQL_Text, cn_connection);
+                adapter.Fill(table);
+                return table;
+            }
+            public static void Execute_SQL(string SQL_Text)
+            {
+                SqlConnection cn_connection = Get_DB_Connection();
+                SqlCommand cmd_Command = new SqlCommand(SQL_Text, cn_connection);
+                cmd_Command.ExecuteNonQuery();
+            }
+            public static int Int(string SQL_Text)
+            {
+                SqlConnection cn_connection = Get_DB_Connection();
+                SqlCommand cmd_Command = new SqlCommand(SQL_Text, cn_connection);
+                return (int)cmd_Command.ExecuteScalar();
+            }
+            public static string String(string SQL_Text)
+            {
+                SqlConnection cn_connection = Get_DB_Connection();
+                SqlCommand cmd_Command = new SqlCommand(SQL_Text, cn_connection);
+                return (string)cmd_Command.ExecuteScalar();
+            }
+
+            public static bool Bool(string SQL_Text)
+            {
+                SqlConnection cn_connection = Get_DB_Connection();
+                SqlCommand cmd_Command = new SqlCommand(SQL_Text, cn_connection);
+                return (bool)cmd_Command.ExecuteScalar();
+            }
+
+            public static object Obj(string SQL_Text)
+            {
+                SqlConnection cn_connection = Get_DB_Connection();
+                SqlCommand cmd_Command = new SqlCommand(SQL_Text, cn_connection);
+                return (object)cmd_Command.ExecuteScalar();
+            }
+
+            public static int[] Ints(string SQL_Text, int length)
+            {
+                SqlConnection cn_connection = Get_DB_Connection();
+                int[] result = new int[length];
+                for (int i = 0; i < length; i++)
+                {
+                    int i_i = i + 1;
+                    string SQL_Text_new = SQL_Text + i_i;
+                    SqlCommand cmd_Command = new SqlCommand(SQL_Text_new, cn_connection);
+                    result[i] = (int)cmd_Command.ExecuteScalar();
+                }
+                return result;
+            }
+
+            public static void Close_DB_Connection()
+            {
+                string cn_String = Get_cn_String();
+                SqlConnection cn_connection = new SqlConnection(cn_String);
+                if (cn_connection.State != ConnectionState.Closed) cn_connection.Close();
+            }
+        }
+
         public static NotesMenu NM()
         {
             return Application.Current.Windows.OfType<NotesMenu>().FirstOrDefault();
+        }
+
+        public static FlowDocument StringToFlowDoc(string xamlString)
+        {
+            if (xamlString != "")
+            {
+                StringReader stringReader = new StringReader(xamlString);
+                System.Xml.XmlReader xmlReader = System.Xml.XmlReader.Create(stringReader);
+                return XamlReader.Load(xmlReader) as FlowDocument;
+            }
+            FlowDocument flowDocument = new FlowDocument();
+            return flowDocument;
         }
 
         private static void LVItem_DoubleClick(object sender, MouseButtonEventArgs e)
@@ -56,8 +146,8 @@ namespace Notes
 
         public static void AddNote(string NoteColor, string TextColor, string XColor)
         {
-            int Id = NullToZero(Methods.ClsDB.Obj("SELECT MAX(Id) FROM Notes", "DBUser")) + 1;
-            Methods.ClsDB.Execute_SQL("INSERT INTO Notes VALUES('" + Id + "','','','" + NoteColor + "','" + TextColor + "','" + XColor + "')", "DBUser");
+            int Id = NullToZero(ClsDB.Obj("SELECT MAX(Id) FROM Notes")) + 1;
+            ClsDB.Execute_SQL("INSERT INTO Notes VALUES('" + Id + "','','','" + NoteColor + "','" + TextColor + "','" + XColor + "')");
             UpdateListView();
             OpenNote(Id);
         }
@@ -85,7 +175,7 @@ namespace Notes
                 {
                     if (CheckIfNoteIsOpen(Note))
                     {
-                        MessageBox.Show("The Note \"" + Methods.ClsDB.String("SELECT Title FROM Notes WHERE Id = '" + Note + "'", "DBUser") + "\" is open close it before deleting it!", "Notes");
+                        MessageBox.Show("The Note \"" + ClsDB.String("SELECT Title FROM Notes WHERE Id = '" + Note + "'") + "\" is open close it before deleting it!", "Notes");
                         isOneOpen = true;
                     }
                 }
@@ -96,7 +186,7 @@ namespace Notes
                 if (MessageBox.Show("Do you really want to delete this Note/these Notes?", "Notes", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                 {
                     foreach (int Note in Ids)
-                        Methods.ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Note + "'", "DBUser");
+                        ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Note + "'");
                     UpdateListView();
                 }
             }
@@ -163,8 +253,8 @@ namespace Notes
         {
             NM().LV.Items.Clear();
 
-            int Count = Methods.ClsDB.Int("SELECT COUNT(*) FROM Notes", "DBUser");
-            int[] Ints = Methods.ClsDB.Ints("SELECT Id FROM(SELECT ROW_NUMBER() Over (Order By Id) as RowNum, * From Notes) t2 Where RowNum = ", Count, "DBUser");
+            int Count = ClsDB.Int("SELECT COUNT(*) FROM Notes");
+            int[] Ints = ClsDB.Ints("SELECT Id FROM(SELECT ROW_NUMBER() Over (Order By Id) as RowNum, * From Notes) t2 Where RowNum = ", Count);
 
             if (Ints != null)
             {
@@ -180,7 +270,7 @@ namespace Notes
 
         public static void ChangeColor(int Id, string NoteColor, string TextColor, string XColor)
         {
-            Methods.ClsDB.Execute_SQL("UPDATE Notes SET NoteColor = '" + NoteColor + "', TextColor = '" + TextColor + "', XColor = '" + XColor + "' WHERE Id = '" + Id + "'", "DBUser");
+            ClsDB.Execute_SQL("UPDATE Notes SET NoteColor = '" + NoteColor + "', TextColor = '" + TextColor + "', XColor = '" + XColor + "' WHERE Id = '" + Id + "'");
         }
 
         public static void SearchForUpdate(bool HiddenSearch)
