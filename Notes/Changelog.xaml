@@ -49,15 +49,10 @@
                 <Paragraph>- Note kann nicht gelöscht während sie offen ist</Paragraph>
                 <Paragraph>- Wählt nicht mehr die nächste Note aus wenn man Enter drückt</Paragraph>
                 <Paragraph>- Notes können jetzt nur noch je einmal geöffnet werden</Paragraph>
-                <Paragraph>1.9</Paragraph>
+                <Paragraph>1.9 Alpha 1</Paragraph>
                 <Paragraph>- Changelog hinzugefügt</Paragraph>
                 <Paragraph>- Es wird erst überprüft ob eine Note offen ist bevor gefragt wird ob sie wirklich gelöscht werden soll</Paragraph>
                 <Paragraph>- Textfelder werden auch entfokussiert wenn man die Note entfokussiert und wenn man auf der Note woanders hinklickt</Paragraph>
-                <Paragraph>- Öffnet Contextmenü nur noch wenn eine oder mehrere Note(s) angewählt sind</Paragraph>
-                <Paragraph>- Notes Überblick verbessert</Paragraph>
-                <Paragraph>- Fragt nur ob die Note(s) gelöscht werden soll(en) wenn eine angewählt ist wenn Entf gedrückt wird</Paragraph>
-                <Paragraph>- Settings Größe angepasst</Paragraph>
-                <Paragraph>- Der Color Editor wird beendet wenn man Enter drückt</Paragraph>
             </FlowDocument>
         </RichTextBox>
     </Grid>
