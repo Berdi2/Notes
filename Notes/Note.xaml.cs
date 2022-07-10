@@ -35,9 +35,9 @@ namespace Notes
             Id = Id_new;
 
             var bc = new BrushConverter();
-            Brush NoteBrush = (Brush)bc.ConvertFrom(Methods.ClsDB.String("SELECT NoteColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
-            Brush TextBrush = (Brush)bc.ConvertFrom(Methods.ClsDB.String("SELECT TextColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
-            Brush XBrush = (Brush)bc.ConvertFrom(Methods.ClsDB.String("SELECT XColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
+            Brush NoteBrush = (Brush)bc.ConvertFrom(Methods.ClsDB.Get_string("SELECT NoteColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
+            Brush TextBrush = (Brush)bc.ConvertFrom(Methods.ClsDB.Get_string("SELECT TextColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
+            Brush XBrush = (Brush)bc.ConvertFrom(Methods.ClsDB.Get_string("SELECT XColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
             Background = NoteBrush;
             TBTitle.Background = NoteBrush;
             TBTitle.BorderBrush = NoteBrush;
@@ -55,9 +55,9 @@ namespace Notes
 
             SP.Visibility = Visibility.Collapsed;
 
-            TBTitle.Text = Methods.ClsDB.String("SELECT Title FROM Notes WHERE Id = '" + Id + "'", "DBUser");
+            TBTitle.Text = Methods.ClsDB.Get_string("SELECT Title FROM Notes WHERE Id = '" + Id + "'", "DBUser");
 
-            string Content = Methods.ClsDB.String("SELECT Content FROM Notes WHERE Id = '" + Id + "'", "DBUser");
+            string Content = Methods.ClsDB.Get_string("SELECT Content FROM Notes WHERE Id = '" + Id + "'", "DBUser");
 
             if (Content != "")
             {
@@ -103,7 +103,7 @@ namespace Notes
 
             if (NotesMenu.NM() != null)
             {
-                NotesMenu.UpdateListView();
+                Methods.UpdateListView();
             }
         }
 

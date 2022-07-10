@@ -31,7 +31,7 @@ namespace Notes
 
         private void BUpdate_Click(object sender, RoutedEventArgs e)
         {
-            NotesMenu.SearchForUpdate(false);
+            Methods.SearchForUpdate(false);
         }
 
         private static readonly Regex _regex = new Regex("[^0-9]"); //regex that matches disallowed text
