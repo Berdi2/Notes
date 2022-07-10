@@ -5,9 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notes"
         mc:Ignorable="d"
-        Title="ManagePresets" Height="450" Width="800">
-    <Grid>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="371,106,0,0" VerticalAlignment="Top" Click="button_Click"/>
-
-    </Grid>
+        Title="Manage your Presets" Height="450" Width="800">
+    <Grid/>
 </Window>

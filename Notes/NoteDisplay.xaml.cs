@@ -17,7 +17,7 @@ using System.Windows.Shapes;
 namespace Notes
 {
     /// <summary>
-    /// Interaction logic for UserControl1.xaml
+    /// Interaction logic for NoteDisplay.xaml
     /// </summary>
     public partial class NoteDisplay : UserControl
     {
@@ -25,13 +25,13 @@ namespace Notes
         {
             InitializeComponent();
 
-            userControl.Id = Id_new;
-            userControl.TitleText = Methods.ClsDB.Get_string("SELECT Title FROM Notes WHERE Id = " + Id_new, "DBUser");
-            userControl.ContentText = Methods.StringToFlowDoc(Methods.ClsDB.Get_string("SELECT Content FROM Notes WHERE Id = " + Id_new, "DBUser"));
+            Id = Id_new;
+            TitleText = Methods.ClsDB.Get_string("SELECT Title FROM Notes WHERE Id = " + Id_new, "DBUser");
+            ContentText = Methods.StringToFlowDoc(Methods.ClsDB.Get_string("SELECT Content FROM Notes WHERE Id = " + Id_new, "DBUser"));
 
             var bc = new BrushConverter();
-            Brush NoteBrush = (Brush)bc.ConvertFrom(Methods.ClsDB.Get_string("SELECT NoteColor FROM Notes WHERE Id = '" + Id_new + "'", "DBUser"));
-            Brush TextBrush = (Brush)bc.ConvertFrom(Methods.ClsDB.Get_string("SELECT TextColor FROM Notes WHERE Id = '" + Id_new + "'", "DBUser"));
+            Brush NoteBrush = (Brush)bc.ConvertFrom(Methods.ClsDB.Get_string("SELECT NoteColor FROM Notes WHERE Id = " + Id_new, "DBUser"));
+            Brush TextBrush = (Brush)bc.ConvertFrom(Methods.ClsDB.Get_string("SELECT TextColor FROM Notes WHERE Id = " + Id_new, "DBUser"));
             rect.Fill = NoteBrush;
             LTitle.Foreground = TextBrush;
             LContent.Foreground = TextBrush;

@@ -20,11 +20,11 @@ namespace Notes
     public partial class AddPreset : Window
     {
         ComboBox CBPresets;
-        public AddPreset(ComboBox CBPresets_neu)
+        public AddPreset(ComboBox CBPresets_new)
         {
             InitializeComponent();
 
-            CBPresets = CBPresets_neu;
+            CBPresets = CBPresets_new;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

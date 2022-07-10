@@ -37,7 +37,7 @@ namespace Notes
             else
             {
                 string[] Tag = (string[])item.Tag;
-                string SQL = " FROM NoteColors WHERE Id = '" + Tag[0] + "'";
+                string SQL = " FROM NoteColors WHERE Id = " + Tag[0];
 
                 string NoteColor = Methods.ClsDB.Get_string("SELECT NoteColor" + SQL, Tag[1]);
                 string TextColor = Methods.ClsDB.Get_string("SELECT TextColor" + SQL, Tag[1]);

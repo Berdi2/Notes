@@ -20,16 +20,10 @@ namespace Notes
     public partial class ManagePresets : Window
     {
         ComboBox CBPresets;
-        public ManagePresets(ComboBox CBPresets_neu)
+        public ManagePresets(ComboBox CBPresets_new)
         {
             InitializeComponent();
-            CBPresets = CBPresets_neu;
-        }
-
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-            AddPreset addPreset = new AddPreset(CBPresets);
-            addPreset.Show();
+            CBPresets = CBPresets_new;
         }
     }
 }

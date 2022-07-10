@@ -173,7 +173,7 @@ namespace Notes
 
                     ComboBoxItem PresetDev = new ComboBoxItem
                     {
-                        Content = ClsDB.Get_string("SELECT Name FROM NoteColors WHERE Id = '" + IdDev + "'", "DBPresets"),
+                        Content = ClsDB.Get_string("SELECT Name FROM NoteColors WHERE Id = " + IdDev, "DBPresets"),
                         Tag = TagDev
                     };
 
@@ -194,7 +194,7 @@ namespace Notes
 
                     ComboBoxItem PresetUser = new ComboBoxItem
                     {
-                        Content = ClsDB.Get_string("SELECT Name FROM NoteColors WHERE Id = '" + IdUser + "'", "DBUser"),
+                        Content = ClsDB.Get_string("SELECT Name FROM NoteColors WHERE Id = " + IdUser, "DBUser"),
                         Tag = TagUser
                     };
 
@@ -225,7 +225,7 @@ namespace Notes
             else if (item.Tag != "None")
             {
                 string[] Tag = (string[])item.Tag;
-                string SQL = " FROM NoteColors WHERE Id = '" + Tag[0] + "'";
+                string SQL = " FROM NoteColors WHERE Id = " + Tag[0];
                 CP_NoteColor.SelectedColor = (Color?)ColorConverter.ConvertFromString(ClsDB.Get_string("SELECT NoteColor" + SQL, Tag[1]));
                 CP_TextColor.SelectedColor = (Color?)ColorConverter.ConvertFromString(ClsDB.Get_string("SELECT TextColor" + SQL, Tag[1]));
                 CP_XColor.SelectedColor = (Color?)ColorConverter.ConvertFromString(ClsDB.Get_string("SELECT XColor" + SQL, Tag[1]));
@@ -263,7 +263,7 @@ namespace Notes
                 {
                     if (CheckIfNoteIsOpen(Note))
                     {
-                        System.Windows.MessageBox.Show("The Note \"" + ClsDB.Get_string("SELECT Title FROM Notes WHERE Id = '" + Note + "'", "DBUser") + "\" is open close it before deleting it!", "Notes");
+                        System.Windows.MessageBox.Show("The Note \"" + ClsDB.Get_string("SELECT Title FROM Notes WHERE Id = " + Note, "DBUser") + "\" is open close it before deleting it!", "Notes");
                         isOneOpen = true;
                     }
                 }
@@ -274,7 +274,7 @@ namespace Notes
                 if (System.Windows.MessageBox.Show("Do you really want to delete this Note/these Notes?", "Notes", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                 {
                     foreach (int Note in Ids)
-                        ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = '" + Note + "'", "DBUser");
+                        ClsDB.Execute_SQL("DELETE FROM Notes WHERE Id = " + Note, "DBUser");
                     UpdateListView();
                 }
             }
@@ -325,11 +325,11 @@ namespace Notes
             NotesMenu.NM().LV.Items.Clear();
 
             int Count = ClsDB.Get_int("SELECT COUNT(*) FROM Notes", "DBUser");
-            int[] Ints = ClsDB.Get_ints("SELECT Id FROM(SELECT ROW_NUMBER() Over (Order By Id) as RowNum, * From Notes) t2 Where RowNum = ", Count, "DBUser");
+            int[] Ids = ClsDB.Get_ints("SELECT Id FROM(SELECT ROW_NUMBER() Over (Order By Id) as RowNum, * From Notes) t2 Where RowNum = ", Count, "DBUser");
 
-            if (Ints != null)
+            if (Ids != null)
             {
-                foreach (int Note in Ints)
+                foreach (int Note in Ids)
                 {
                     NoteDisplay ND = new NoteDisplay(Note);
                     ND.MouseDoubleClick += NotesMenu.LVItem_DoubleClick;
@@ -341,7 +341,7 @@ namespace Notes
 
         public static void ChangeColor(int Id, string NoteColor, string TextColor, string XColor)
         {
-            ClsDB.Execute_SQL("UPDATE Notes SET NoteColor = '" + NoteColor + "', TextColor = '" + TextColor + "', XColor = '" + XColor + "' WHERE Id = '" + Id + "'", "DBUser");
+            ClsDB.Execute_SQL("UPDATE Notes SET NoteColor = '" + NoteColor + "', TextColor = '" + TextColor + "', XColor = '" + XColor + "' WHERE Id = " + Id, "DBUser");
         }
     }
 }

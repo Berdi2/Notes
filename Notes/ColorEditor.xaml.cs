@@ -30,9 +30,9 @@ namespace Notes
             Id = Id_new;
             note = note_new;
 
-            CP_NoteColor.SelectedColor = (Color)ColorConverter.ConvertFromString(Methods.ClsDB.Get_string("SELECT NoteColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
-            CP_TextColor.SelectedColor = (Color)ColorConverter.ConvertFromString(Methods.ClsDB.Get_string("SELECT TextColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
-            CP_XColor.SelectedColor = (Color)ColorConverter.ConvertFromString(Methods.ClsDB.Get_string("SELECT XColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
+            CP_NoteColor.SelectedColor = (Color)ColorConverter.ConvertFromString(Methods.ClsDB.Get_string("SELECT NoteColor FROM Notes WHERE Id = " + Id, "DBUser"));
+            CP_TextColor.SelectedColor = (Color)ColorConverter.ConvertFromString(Methods.ClsDB.Get_string("SELECT TextColor FROM Notes WHERE Id = " + Id, "DBUser"));
+            CP_XColor.SelectedColor = (Color)ColorConverter.ConvertFromString(Methods.ClsDB.Get_string("SELECT XColor FROM Notes WHERE Id = " + Id, "DBUser"));
             
             Methods.UpdateCBPresets(CBPresets);
         }
@@ -47,7 +47,7 @@ namespace Notes
             else
             {
                 string[] Tag = (string[])item.Tag;
-                string SQL = " FROM NoteColors WHERE Id = '" + Tag[0] + "'";
+                string SQL = " FROM NoteColors WHERE Id = " + Tag[0];
 
                 string NoteColor = Methods.ClsDB.Get_string("SELECT NoteColor" + SQL, Tag[1]);
                 string TextColor = Methods.ClsDB.Get_string("SELECT TextColor" + SQL, Tag[1]);
