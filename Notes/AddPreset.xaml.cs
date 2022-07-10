@@ -19,7 +19,7 @@ namespace Notes
     /// </summary>
     public partial class AddPreset : Window
     {
-        ComboBox CBPresets;
+        readonly ComboBox CBPresets;
         public AddPreset(ComboBox CBPresets_new)
         {
             InitializeComponent();
