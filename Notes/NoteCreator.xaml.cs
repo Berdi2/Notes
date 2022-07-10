@@ -23,12 +23,28 @@ namespace Notes
         public NoteCreator()
         {
             InitializeComponent();
+
+            Methods.UpdateCBPresets(CBPresets);
         }
 
         private void BFinish_Click(object sender, RoutedEventArgs e)
         {
-            NotesMenu.AddNote(CP_NoteColor.SelectedColor.ToString(), CP_TextColor.SelectedColor.ToString(), CP_XColor.SelectedColor.ToString());
+            ComboBoxItem item = (ComboBoxItem)CBPresets.SelectedItem;
+            if (item.Tag == "None")
+            {
+                Methods.AddNote(CP_NoteColor.SelectedColor.ToString(), CP_TextColor.SelectedColor.ToString(), CP_XColor.SelectedColor.ToString());
+            }
+            else
+            {
+                string[] Tag = (string[])item.Tag;
+                string SQL = " FROM NoteColors WHERE Id = '" + Tag[0] + "'";
 
+                string NoteColor = Methods.ClsDB.Get_string("SELECT NoteColor" + SQL, Tag[1]);
+                string TextColor = Methods.ClsDB.Get_string("SELECT TextColor" + SQL, Tag[1]);
+                string XColor = Methods.ClsDB.Get_string("SELECT XColor" + SQL, Tag[1]);
+
+                Methods.AddNote(NoteColor, TextColor, XColor);
+            }
             Close();
         }
 
@@ -38,6 +54,11 @@ namespace Notes
             {
                 BFinish_Click(sender, e);
             }
+        }
+
+        private void CBPresets_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Methods.CBPresets_SelectionChangedHandler(CBPresets, CP_NoteColor, CP_TextColor, CP_XColor);
         }
     }
 }

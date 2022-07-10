@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Xceed.Wpf.Toolkit;
 
 namespace Notes
 {
@@ -29,18 +30,35 @@ namespace Notes
             Id = Id_new;
             note = note_new;
 
-            CP_NoteColor.SelectedColor = (Color)ColorConverter.ConvertFromString(Methods.ClsDB.String("SELECT NoteColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
-            CP_TextColor.SelectedColor = (Color)ColorConverter.ConvertFromString(Methods.ClsDB.String("SELECT TextColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
-            CP_XColor.SelectedColor = (Color)ColorConverter.ConvertFromString(Methods.ClsDB.String("SELECT XColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
+            CP_NoteColor.SelectedColor = (Color)ColorConverter.ConvertFromString(Methods.ClsDB.Get_string("SELECT NoteColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
+            CP_TextColor.SelectedColor = (Color)ColorConverter.ConvertFromString(Methods.ClsDB.Get_string("SELECT TextColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
+            CP_XColor.SelectedColor = (Color)ColorConverter.ConvertFromString(Methods.ClsDB.Get_string("SELECT XColor FROM Notes WHERE Id = '" + Id + "'", "DBUser"));
+            
+            Methods.UpdateCBPresets(CBPresets);
         }
 
         private void BFinish_Click(object sender, RoutedEventArgs e)
         {
-            NotesMenu.ChangeColor(Id, CP_NoteColor.SelectedColor.ToString(), CP_TextColor.SelectedColor.ToString(), CP_XColor.SelectedColor.ToString());
+            ComboBoxItem item = (ComboBoxItem)CBPresets.SelectedItem;
+            if (item.Tag == "None")
+            {
+                Methods.ChangeColor(Id, CP_NoteColor.SelectedColor.ToString(), CP_TextColor.SelectedColor.ToString(), CP_XColor.SelectedColor.ToString());
+            }
+            else
+            {
+                string[] Tag = (string[])item.Tag;
+                string SQL = " FROM NoteColors WHERE Id = '" + Tag[0] + "'";
+
+                string NoteColor = Methods.ClsDB.Get_string("SELECT NoteColor" + SQL, Tag[1]);
+                string TextColor = Methods.ClsDB.Get_string("SELECT TextColor" + SQL, Tag[1]);
+                string XColor = Methods.ClsDB.Get_string("SELECT XColor" + SQL, Tag[1]);
+
+                Methods.ChangeColor(Id, NoteColor, TextColor, XColor);
+            }
 
             note.Close();
 
-            NotesMenu.OpenNote(Id);
+            Methods.OpenNote(Id);
 
             Close();
         }
@@ -51,6 +69,11 @@ namespace Notes
             {
                 BFinish_Click(sender, e);
             }
+        }
+
+        private void CBPresets_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Methods.CBPresets_SelectionChangedHandler(CBPresets, CP_NoteColor, CP_TextColor, CP_XColor);
         }
     }
 }

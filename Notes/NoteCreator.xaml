@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Notes"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="NoteCreator" Height="281" Width="284" KeyDown="Window_KeyDown">
+        Title="NoteCreator" Height="307" Width="284" KeyDown="Window_KeyDown">
     <Grid>
         <Label x:Name="label1" Content="Note Color" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <xctk:ColorPicker x:Name="CP_NoteColor" Margin="10,41,0,0" Width="120" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" SelectedColor="#FFFFDB5B"/>
@@ -14,6 +14,10 @@
         <xctk:ColorPicker x:Name="CP_TextColor" Margin="10,97,0,0" Width="120" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" SelectedColor="Black"/>
         <Label x:Name="label3" Content="Settings Color" HorizontalAlignment="Left" Margin="10,122,0,0" VerticalAlignment="Top"/>
         <xctk:ColorPicker x:Name="CP_XColor" Margin="10,153,0,0" Width="120" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" SelectedColor="Black"/>
+        <Label x:Name="label" Content="Presets" HorizontalAlignment="Left" Margin="10,178,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="CBPresets" HorizontalAlignment="Left" Margin="10,209,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" SelectionChanged="CBPresets_SelectionChanged">
+            <ComboBoxItem Content="None"/>
+        </ComboBox>
         <Button x:Name="BFinish" Content="Create" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Click="BFinish_Click"/>
     </Grid>
 </Window>
